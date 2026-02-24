@@ -35,4 +35,8 @@ export class UserRepository implements IUserRepository {
     const result = await this.userRepository.delete({ email });
     return result.affected ? result.affected > 0 : false;
   }
+
+  async findAll(): Promise<UserCredentialsEntity[]> {
+    return this.userRepository.find();
+  }
 }

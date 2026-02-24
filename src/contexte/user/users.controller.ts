@@ -1,26 +1,26 @@
-import { Body, Controller, Post, Put, Delete, Param } from '@nestjs/common';
+import { Body, Controller, Post, Put, Delete, Param, Get } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
-import { UserCredentialsEntity } from './user.credentials.entity';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  async createUser(@Body() body: any) {
+  async createUser(@Body() body: CreateUserDto) {
     console.log('Body reçu:', body);
-    
-    const newUser = new UserCredentialsEntity();
-    newUser.email = body?.email;
-    newUser.passwordHash = body?.password;
 
-    return this.userService.createUser(newUser);
+    return this.userService.createUser(body);
   }
 
   @Put(':email')
   async updatePassword(@Param('email') email: string, @Body() body: any) {
     return this.userService.updatePassword(email, body?.password);
+  }
+
+  @Get()
+  async getAllUsers() {
+    return this.userService.getAllUsers();
   }
 
   @Delete(':email')

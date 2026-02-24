@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './contexte/auth/auth.module';
 import { ShipModule } from './contexte/ship/ship.module';
 import { UsersModule } from './contexte/user/users.module';
+import { eventModule } from './contexte/core/events/event.modules';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { UsersModule } from './contexte/user/users.module';
     }),
 
     AuthModule,
+    eventModule,
     ShipModule,
     UsersModule,
   ],

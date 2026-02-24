@@ -1,5 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ResponseInterceptor } from './contexte/core/http/interceptors/response.interceptor';
+import { HttpExceptionFilter } from './contexte/core/http/exception/http-exception.filter';
+import { buildGlobalValidationPipe } from './contexte/core/http/validation/validation.pipe';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,5 +26,8 @@ async function bootstrap() {
   });
   
   await app.listen(process.env.PORT ?? 3000);
+  app.useGlobalPipes(buildGlobalValidationPipe()); // -> transforme les erreurs DTO en { code, message, fields }
+  app.useGlobalFilters(new HttpExceptionFilter()); // -> transforme toutes les erreurs (DomainError, HttpException...) en { code, message, fields?, details? }
+  app.useGlobalInterceptors(new ResponseInterceptor()); // -> transforme toutes les reponses OK en { data, meta? }
 }
 bootstrap();

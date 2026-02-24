@@ -12,6 +12,17 @@ export class UserCredentialsEntity{
     @Column({name: 'email', type:"varchar", length:255})
     email:string;
 
+        @Column({
+            name: 'permissions',
+            type: 'bigint',
+            default: '0',
+            transformer: {
+                to: (value: bigint) => value.toString(),
+                from: (value: string) => BigInt(value ?? '0'),
+            },
+        })
+        permissions: bigint;
+
     @CreateDateColumn({name:'created_at'})//colonne automatique
     createdAt:Date;
 }
